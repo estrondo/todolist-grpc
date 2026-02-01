@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package todolist.v1;
+
+import "todolist/v1/time.proto";
+
+// Geo stuff
+message Geo {
+  message SearchItemAroundRequest {
+    float lng = 1;
+    float lat = 2;
+    sint32 alt = 3;
+    Instant instant = 4;
+    uint32 distance = 5;
+    // for each [x, y, z, time]
+    repeated sint32 coordinates = 6;
+  }
+
+  message SearchItemAroundResponse {
+    repeated GeoItem items = 1;
+  }
+
+  message UpsertLocationRequest {
+    GeoItem item = 1;
+  }
+
+  message UpsertLocationResponse {
+    GeoItem item = 1;
+  }
+
+  message GeoItem {
+    string id = 1;
+    string todo_item = 2;
+    float lng = 3;
+    float lat = 4;
+    sint32 alt = 5;
+    uint32 distance = 6;
+    fixed32 info = 7;
+  }
+
+  message RemoveLocationRequest {
+    oneof how_to_remove {
+      string remove_id = 1;
+      string remove_by_todo_item = 2;
+    }
+  }
+
+  message RemoveLocationResponse {
+    repeated GeoItem removed = 1;
+  }
+}
+
+// Manage notifications for todo items based on their locations.
+service GeoService {
+  rpc UpsertLocation(stream Geo.UpsertLocationRequest) returns (Geo.UpsertLocationResponse);
+
+  rpc SearchItemAround(stream Geo.SearchItemAroundRequest) returns (stream Geo.SearchItemAroundResponse);
+
+  rpc RemoveLocation(Geo.RemoveLocationRequest) returns (Geo.RemoveLocationResponse);
+}

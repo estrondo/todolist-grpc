@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+package todolist.v1;
+
+message Account {
+  message Profile {
+    string id = 1;
+    string name = 2;
+    string theme = 3;
+    string email = 4;
+    map<string, PreferenceValue> preferences = 5;
+  }
+
+  message PreferenceValue {
+    oneof value {
+      string is_string = 1;
+      int32 is_int = 2;
+      bool is_bool = 3;
+      double is_double = 4;
+    }
+  }
+
+  message UpdateProfileRequest {
+    Profile profile = 1;
+  }
+
+  message UpdateProfileResponse {
+    Profile profile = 2;
+  }
+
+  message RemoveRequest {
+    string id = 1;
+  }
+
+  message RemoveResponse {
+    string id = 1;
+  }
+
+  message UploadAvatarRequest {
+    string id = 1;
+    bytes content = 2;
+  }
+
+  message UploadAvatarResponse {
+    string id = 1;
+    bytes content = 2;
+  }
+
+  message GetProfileRequest {
+    string id = 1;
+  }
+
+  message GetProfileResponse {
+    Profile profile = 1;
+  }
+
+  message GetAvatarRequest {
+    string id = 1;
+  }
+
+  message GetAvatarResponse {
+    string id = 1;
+    bytes content = 2;
+  }
+}
+
+service AccountService {
+  rpc GetProfile(Account.GetProfileRequest) returns (Account.GetProfileResponse);
+
+  rpc GetAvatar(Account.GetAvatarRequest) returns (Account.GetAvatarResponse);
+
+  rpc UpdateProfile(Account.UpdateProfileRequest) returns (Account.UpdateProfileResponse);
+
+  rpc UploadAvatar(Account.UploadAvatarRequest) returns (Account.UploadAvatarResponse);
+
+  rpc Remove(Account.RemoveRequest) returns (Account.RemoveResponse);
+}

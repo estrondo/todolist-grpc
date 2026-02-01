@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package todolist.v1;
+
+import "todolist/v1/time.proto";
+
+// Security messages.
+message Security {
+  message LoginRequest {
+    oneof method {
+      OpenIdLoginRequest open_id = 1;
+    }
+  }
+
+  message OpenIdLoginRequest {
+    string provider = 1;
+    string token = 2;
+  }
+
+  message LoginResponse {
+    string id = 1;
+    bytes access_token = 2;
+    bytes refresh_token = 3;
+    Instant timeout = 4;
+  }
+
+  message RefreshRequest {
+    bytes refresh_token = 2;
+  }
+
+  message RefreshResponse {
+    bytes access_token = 1;
+    bytes refresh_token = 2;
+    Instant timeout = 3;
+  }
+
+  message LogoutRequest {
+    bytes refresh_token = 1;
+  }
+
+  message LogoutResponse {}
+}
+
+// It manages security stuff
+service SecurityService {
+  // Makes the user identification.
+  rpc Login(Security.LoginRequest) returns (Security.LoginResponse);
+
+  rpc Refresh(Security.RefreshRequest) returns (Security.RefreshResponse);
+
+  rpc Logout(Security.LogoutRequest) returns (Security.LogoutResponse);
+}

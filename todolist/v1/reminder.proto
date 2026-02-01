@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package todolist.v1;
+
+import "todolist/v1/time.proto";
+
+message Reminder {
+  message Item {
+    string id = 1;
+    string todo_id = 2;
+    oneof when {
+      Specific specific = 3;
+      Daily daily = 4;
+    }
+  }
+
+  message Specific {
+    repeated Instant at = 1;
+  }
+
+  message Daily {
+    MomentOfDay moment = 1;
+    repeated DayOfWeek days = 2;
+  }
+
+  message UpsertItemRequest {
+    Item item = 1;
+  }
+
+  message UpsertItemResponse {
+    Item item = 1;
+  }
+}
+
+// Manages your reminders
+service ReminderService {
+  rpc UpsertItem(Reminder.UpsertItemRequest) returns (Reminder.UpsertItemResponse);
+}

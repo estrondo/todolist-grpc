@@ -1,0 +1,101 @@
+syntax = "proto3";
+
+package todolist.v1;
+
+import "todolist/v1/time.proto";
+
+// All TODO items messages.
+message Todo {
+  message TodayRequest {
+    Date date = 1;
+  }
+
+  message TodayResponse {
+    repeated Item items = 1;
+  }
+
+  message Item {
+    string id = 1;
+    string title = 2;
+    DueDate due_date = 3;
+    Status status = 4;
+    Content content = 5;
+  }
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_ACTIVE = 1;
+    STATUS_POSTPONED = 2;
+    STATUS_CANCELLED = 3;
+    STATUS_DONE = 4;
+  }
+
+  message Content {
+    oneof content {
+      PlainContent plain = 1;
+      MarkdownContent markdown = 2;
+    }
+  }
+
+  message PlainContent {
+    string content = 1;
+  }
+
+  message MarkdownContent {
+    string content = 1;
+  }
+
+  message DueDate {
+    oneof when {
+      Date whole_day = 1;
+      Period period = 2;
+    }
+  }
+
+  message SearchRequest {
+    repeated Period by_period = 1;
+    repeated string by_contents = 2;
+    repeated Status by_statuses = 3;
+  }
+
+  message SearchResponse {
+    repeated Item items = 1;
+  }
+
+  message UpsertItemRequest {
+    Item item = 1;
+  }
+
+  message UpsertItemResponse {
+    Item item = 1;
+  }
+
+  message GetRequest {
+    string id = 1;
+  }
+
+  message GetResponse {
+    Item item = 1;
+  }
+
+  message RemoveItemRequest {
+    repeated string ids = 1;
+  }
+
+  message RemoveItemResponse {
+    repeated Item items = 1;
+  }
+}
+
+// It manages your todo list.
+service TodoService {
+  rpc Today(Todo.TodayRequest) returns (Todo.TodayResponse);
+
+  rpc Search(Todo.SearchRequest) returns (Todo.SearchResponse);
+
+  rpc Get(stream Todo.GetRequest) returns (stream Todo.GetResponse);
+
+  rpc UpsertItem(Todo.UpsertItemRequest) returns (Todo.UpsertItemResponse);
+
+  rpc RemoveItem(Todo.RemoveItemRequest) returns (Todo.RemoveItemResponse);
+}

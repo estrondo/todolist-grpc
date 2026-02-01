@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package todolist.v1;
+
+// Everything is in UTC.
+
+message Date {
+  uint32 year = 1;
+  uint32 month = 2;
+  uint32 day = 3;
+}
+
+message MomentOfDay {
+  uint32 hour = 1;
+  uint32 minute = 2;
+}
+
+message Period {
+  uint32 year = 1;
+  uint32 month = 2;
+  uint32 day = 3;
+  uint32 hour = 4;
+  uint32 minute = 5;
+  uint32 minutes = 6;
+}
+
+message Instant {
+  // seconds.
+  uint64 timestamp = 1;
+}
+
+enum DayOfWeek {
+  DAY_OF_WEEK_UNSPECIFIED = 0;
+  DAY_OF_WEEK_MONDAY = 1;
+  DAY_OF_WEEK_TUESDAY = 2;
+  DAY_OF_WEEK_WEDNESDAY = 3;
+  DAY_OF_WEEK_THURSDAY = 4;
+  DAY_OF_WEEK_FRIDAY = 5;
+  DAY_OF_WEEK_SATURDARY = 6;
+  DAY_OF_WEEK_SUNDAY = 7;
+}
