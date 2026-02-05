@@ -13,10 +13,12 @@ message Account {
 
   message PreferenceValue {
     oneof value {
-      string is_string = 1;
-      int32 is_int = 2;
-      bool is_bool = 3;
-      double is_double = 4;
+      string string_value = 1;
+      int32 int_value = 2;
+      int64 long_value = 3;
+      bool bool_value = 4;
+      float float_value = 5;
+      double double_value = 6;
     }
   }
 
