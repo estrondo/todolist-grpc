@@ -17,18 +17,18 @@ message Geo {
   }
 
   message SearchItemAroundResponse {
-    repeated GeoItem items = 1;
+    repeated Item items = 1;
   }
 
   message UpsertLocationRequest {
-    GeoItem item = 1;
+    Item item = 1;
   }
 
   message UpsertLocationResponse {
-    GeoItem item = 1;
+    Item item = 1;
   }
 
-  message GeoItem {
+  message Item {
     string id = 1;
     string todo_item = 2;
     float lng = 3;
@@ -46,7 +46,7 @@ message Geo {
   }
 
   message RemoveLocationResponse {
-    repeated GeoItem removed = 1;
+    repeated Item removed = 1;
   }
 }
 
