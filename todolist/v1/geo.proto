@@ -52,7 +52,7 @@ message Geo {
 
 // Manage notifications for todo items based on their locations.
 service GeoService {
-  rpc UpsertLocation(stream Geo.UpsertLocationRequest) returns (Geo.UpsertLocationResponse);
+  rpc UpsertLocation(Geo.UpsertLocationRequest) returns (Geo.UpsertLocationResponse);
 
   rpc SearchItemAround(stream Geo.SearchItemAroundRequest) returns (stream Geo.SearchItemAroundResponse);
 
